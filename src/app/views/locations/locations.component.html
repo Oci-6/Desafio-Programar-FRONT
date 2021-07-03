@@ -1,0 +1,88 @@
+<p-card header="Localidades del departamento" styleClass="p-card-shadow p-p-3 p-mt-3">
+    <p-table [columns]="cols" [value]="locationsDepartment" [scrollLeft]="true"
+        styleClass="p-datatable-gridlines p-datatable-striped" [responsive]="true">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+                <th>Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-locations_department let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns">
+                    <span class="p-column-title">{{col.header}}</span>
+                    {{clases_curso[col.field]}}
+                </td>
+                <td>
+                    <button pButton pRipple type="button" icon="pi pi-pencil" title="Editar"
+                        class="p-button-rounded p-button-warning p-mr-2"
+                        (click)="showEditarLocationDialog(locations_department)">
+                    </button>
+                    <button pButton pRipple type="button" icon="pi pi-trash" title="Eliminar"
+                        class="p-button-rounded p-button-danger p-mr-2" (click)="ngOnDelete(locations_department.id)">
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <button pButton pRipple type="button" label="Agregar Localidad" class="p-button-rounded p-button-primary p-mt-3"
+        (click)="showAgregarLocationDialog()"></button>
+</p-card>
+
+<p-dialog header="Agregar Localidad" [(visible)]="displayAgregarLocationDialog" [breakpoints]="[{'960px': '75vw'}]"
+    [style]="{width: '50vw'}" [baseZIndex]="10000">
+    <form [formGroup]="locationForm" (ngSubmit)="ngOnSubmit()">
+        <div class="p-grid p-formgrid p-flex-column p-fluid">
+            <div class="p-col">
+                <p-message *ngIf="!locationForm.valid" severity="error" text="Faltan Campos"></p-message>
+                <p-message *ngIf="message" severity="{{message.type}}" text="{{message.msg}}"></p-message>
+            </div>
+            <div class="p-col p-mt-3">
+                <span class="p-float-label">
+                    <input id="name" type="text" formControlName="name" pInputText>
+                    <label for="name">Nombre</label>
+                </span>
+            </div>
+
+            <div class="p-col p-mt-5">
+                <p-button type="submit" label="Confirmar" icon="pi pi-check"></p-button>
+            </div>
+
+        </div>
+    </form>
+</p-dialog>
+
+<p-dialog header="Editar Localidad" [(visible)]="displayEditarLocationDialog" [breakpoints]="[{'960px': '75vw'}]"
+    [style]="{width: '50vw'}" [baseZIndex]="10000">
+    <form [formGroup]="editarLocationForm" (ngSubmit)="ngOnEdit()">
+        <div class="p-grid p-formgrid p-flex-column p-fluid">
+            <div class="p-col">
+                <p-message *ngIf="!editarLocationForm.valid" severity="error" text="Faltan Campos"></p-message>
+                <p-message *ngIf="message" severity="{{message.type}}" text="{{message.msg}}"></p-message>
+            </div>
+            <div class="p-col p-mt-3">
+                <span class="p-float-label">
+                    <input id="name" type="text" formControlName="name" [(ngModel)]="selectedLocaiton.name" pInputText>
+                    <label for="name">Nombre</label>
+                </span>
+            </div>
+            <div class="p-col p-mt-3">
+                <span class="p-float-label">
+                    <p-dropdown formControlName="department" id="department" [(ngModel)]="selectedLocation.department"
+                        [options]="department" optionValue="id" optionLabel="name"></p-dropdown>
+                    <label for="department">Departamento</label>
+                </span>
+            </div>
+            <div class="p-col p-mt-5">
+                <p-button type="submit" label="Confirmar" icon="pi pi-check"></p-button>
+            </div>
+
+        </div>
+    </form>
+</p-dialog>
+
+
+
+<p-confirmDialog header="Confirmacion" icon="pi pi-exclamation-triangle"></p-confirmDialog>

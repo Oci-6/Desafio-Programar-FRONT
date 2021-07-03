@@ -20,13 +20,15 @@ import { AuthService } from './services/AuthService/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MenubarModule } from 'primeng/menubar';
 import { ToastModule } from 'primeng/toast';
+import { LocationsComponent } from './views/locations/locations.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    LocationsComponent
   ],
   imports: [
     BrowserModule,
