@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { User } from './models/User';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Desafio-Programar-FRONT';
+
+  user: User | undefined;
+
+  ngOnInit(): void {
+    let usuario = localStorage.getItem('user');
+
+    if (typeof usuario === 'string') {
+      this.user = JSON.parse(usuario);
+    }
+  }
 }

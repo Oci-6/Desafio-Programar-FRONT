@@ -5,6 +5,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './views/login/login/login.component';
+import { AuthInterceptor } from './services/AuthService/auth.interceptor';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -16,12 +18,15 @@ import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from './services/AuthService/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthInterceptor } from './services/AuthService/auth.interceptor';
+import { MenubarModule } from 'primeng/menubar';
+import { ToastModule } from 'primeng/toast';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +34,7 @@ import { AuthInterceptor } from './services/AuthService/auth.interceptor';
     HttpClientModule,
     PasswordModule,
     InputTextModule,
+    MenubarModule,
     CardModule,
     ButtonModule,
     DividerModule,
@@ -36,6 +42,7 @@ import { AuthInterceptor } from './services/AuthService/auth.interceptor';
     MessagesModule,
     FormsModule,
     ReactiveFormsModule,
+    ToastModule,
   ],
   providers: [    
     MessageService,
