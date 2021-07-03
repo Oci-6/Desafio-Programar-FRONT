@@ -4,6 +4,9 @@ import { Location } from 'src/app/models/Location';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
 import { LocationService } from 'src/app/services/LocationService/location.service';
+import { Message } from 'src/app/models/Message';
+import { Department } from 'src/app/models/Department';
+import { DepartmentService } from 'src/app/services/DepartamentService/department.service';
 
 @Component({
   selector: 'app-locations',
@@ -12,6 +15,9 @@ import { LocationService } from 'src/app/services/LocationService/location.servi
 })
 export class LocationsComponent implements OnInit {
 
+  message: Message | undefined;
+  departments: Department[] = [];
+  
   departmentId: number | undefined;
   locationsDepartment: Location[] = [];
 
@@ -26,6 +32,7 @@ export class LocationsComponent implements OnInit {
 
   constructor(
     private locationService: LocationService,
+    private departmentService: DepartmentService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
@@ -36,12 +43,19 @@ export class LocationsComponent implements OnInit {
     const routeParams = this.route.snapshot.paramMap;
     this.departmentId = Number(routeParams.get('departmentId'));
 
+    this.departmentService.getDepartments().subscribe(
+      result => {
+        this.departments = result;
+      }
+    );
+
     this.locationForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
     });
 
     this.editarLocationForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
+      name: new FormControl(''),
+      department: new FormControl(''),
     });
 
     this.getLocationsDepartment(this.departmentId);
@@ -75,9 +89,9 @@ export class LocationsComponent implements OnInit {
 
   getLocationsDepartment(departmentId: number) {
     // Get localidades de un departamento
-    this.locationService.getLocationsDepartment(departmentId).subscribe(
+    this.departmentService.getDepartment(departmentId).subscribe(
       result => {
-        this.locationsDepartment = result;
+        if(result.locations)this.locationsDepartment = result.locations;
       }
     );
   }
@@ -102,7 +116,8 @@ export class LocationsComponent implements OnInit {
     let location = new Location();
     location.id = this.selectedLocation.id;
     location.name = this.editarLocationForm.controls.name.value;
-    location.departmentId = this.departmentId;
+    location.departmentId = this.editarLocationForm.controls.department.value;
+    console.log(location);
 
     this.locationService.putLocation(location).subscribe(
       response => {
@@ -116,11 +131,11 @@ export class LocationsComponent implements OnInit {
     );
   }
 
-  showAgregarClaseDialog(): void {
+  showAgregarLocationDialog(): void {
     this.displayAgregarLocationDialog = true;
   }
 
-  showEditarClaseDialog(location: Location): void {
+  showEditarLocationDialog(location: Location): void {
 
     this.selectedLocation = location;
 

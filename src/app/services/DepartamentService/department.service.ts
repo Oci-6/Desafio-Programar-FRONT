@@ -19,15 +19,15 @@ export class DepartmentService {
     return this.http.post(this.URL, Department);
   }
   
-  getDepartment(nameDepartment: string) {
-    return this.http.get(this.URL + '/' + nameDepartment);
+  getDepartment(departmentId: number) {
+    return this.http.get<Department>(this.URL + '/' + departmentId);
   }
 
-  putDepartment(Department: Department, nameDepartment: string) {
-    return this.http.put(this.URL+"/"+nameDepartment, Department);
+  putDepartment(Department: Department, departmentId: number) {
+    return this.http.put(this.URL+"/"+ departmentId, Department);
   }
 
-  deleteDepartment(nameDepartment: string) {
-    return this.http.delete(this.URL + '/' + nameDepartment);
+  deleteDepartment(departmentId: number) {
+    return this.http.delete(this.URL + '/' + departmentId);
   }
 }
