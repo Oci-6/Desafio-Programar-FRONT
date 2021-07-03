@@ -13,7 +13,7 @@
             <tr>
                 <td *ngFor="let col of columns">
                     <span class="p-column-title">{{col.header}}</span>
-                    {{clases_curso[col.field]}}
+                    {{locations_department[col.field]}}
                 </td>
                 <td>
                     <button pButton pRipple type="button" icon="pi pi-pencil" title="Editar"
@@ -64,16 +64,14 @@
             </div>
             <div class="p-col p-mt-3">
                 <span class="p-float-label">
-                    <input id="name" type="text" formControlName="name" [(ngModel)]="selectedLocaiton.name" pInputText>
+                    <input id="name" type="text" formControlName="name" [(ngModel)]="selectedLocation.name" pInputText>
                     <label for="name">Nombre</label>
                 </span>
             </div>
             <div class="p-col p-mt-3">
-                <span class="p-float-label">
-                    <p-dropdown formControlName="department" id="department" [(ngModel)]="selectedLocation.department"
-                        [options]="department" optionValue="id" optionLabel="name"></p-dropdown>
-                    <label for="department">Departamento</label>
-                </span>
+                <p-dropdown formControlName="department" id="department" placeholder="Departamento"
+                    [options]="departments" optionValue="id" optionLabel="name">
+                </p-dropdown>
             </div>
             <div class="p-col p-mt-5">
                 <p-button type="submit" label="Confirmar" icon="pi pi-check"></p-button>

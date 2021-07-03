@@ -8,6 +8,7 @@ import { LoginComponent } from './views/login/login/login.component';
 import { AuthInterceptor } from './services/AuthService/auth.interceptor';
 import { NavbarComponent } from './components/navbar/navbar.component';
 
+import { DialogModule } from 'primeng/dialog';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -30,6 +31,9 @@ import { LoginGuard } from './guards/login.guard';
 import { BusinessComponent } from './views/Business/business/business.component';
 import { BusinessTableComponent } from './views/BusinessTable/business-table/business-table.component';
 import { LocationsComponent } from './views/locations/locations.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 
 @NgModule({
@@ -62,10 +66,14 @@ import { LocationsComponent } from './views/locations/locations.component';
     PanelMenuModule,
     BrowserAnimationsModule,
     TableModule,
+    DialogModule,
+    DropdownModule,
+    ConfirmDialogModule,
   ],
   providers: [    
     MessageService,
     AuthService,
+    ConfirmationService,
   
     {
       provide: HTTP_INTERCEPTORS,

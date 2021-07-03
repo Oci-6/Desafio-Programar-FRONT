@@ -27,8 +27,8 @@ export class LocationService {
     return this.http.post(this.URL, location);
   }
 
-  getLocation(locationName: string) {
-    return this.http.get(`${this.URL}/${locationName}`);
+  getLocation(locationId: string) {
+    return this.http.get(`${this.URL}/${locationId}`);
   }
 
   putLocation(location: Location) {
