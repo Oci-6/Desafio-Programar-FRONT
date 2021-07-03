@@ -20,13 +20,27 @@ import { AuthService } from './services/AuthService/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MenubarModule } from 'primeng/menubar';
 import { ToastModule } from 'primeng/toast';
+import { MenuComponent } from './components/menu/menu.component';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DepartmentsComponent } from './views/Departments/departments/departments.component';
+import { DepartmentComponent } from './views/Department/department/department.component';
+import { TableModule } from 'primeng/table';
+import { LoginGuard } from './guards/login.guard';
+import { BusinessComponent } from './views/Business/business/business.component';
+import { BusinessTableComponent } from './views/BusinessTable/business-table/business-table.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    MenuComponent,
+    DepartmentsComponent,
+    DepartmentComponent,
+    BusinessComponent,
+    BusinessTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,16 +57,20 @@ import { ToastModule } from 'primeng/toast';
     FormsModule,
     ReactiveFormsModule,
     ToastModule,
+    PanelMenuModule,
+    BrowserAnimationsModule,
+    TableModule,
   ],
   providers: [    
     MessageService,
     AuthService,
-
+  
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
     },
+    LoginGuard,
   ],
   bootstrap: [AppComponent]
 })

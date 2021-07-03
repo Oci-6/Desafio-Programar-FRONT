@@ -1,0 +1,77 @@
+<div class="p-grid p-jc-center p-mt-4">
+    <div class="p-col p-md-6 p-xl-4">
+        <p-card header="Agregar Empresa" styleClass="p-card-shadow p-p-3">
+            <form [formGroup]="deparmentForm" (ngSubmit)="ngOnSubmit()">
+                <div class="p-grid p-formgrid p-flex-column p-fluid">
+                    <div class="p-col">
+                        <p-message *ngIf="!deparmentForm.valid" severity="error" text="Faltan Campos"></p-message>
+                        <p-message *ngIf="message" severity="{{message.type}}" text="{{message.msg}}"></p-message>
+                    </div>
+                    <div class="p-col p-mt-3">
+                        <span class="p-float-label">
+                            <input id="razonSocial" type="text" formControlName="razonSocial" pInputText>
+                            <label for="razonSocial">Razon Social</label>
+                        </span>
+                    </div>
+                    <div class="p-col p-mt-3">
+                        <span class="p-float-label">
+                            <input id="nombreFantasia" type="text" formControlName="nombreFantasia" pInputText>
+                            <label for="nombreFantasia">Nombre Fantasia</label>
+                        </span>
+                    </div>
+                    <div class="p-col p-mt-3">
+                        <span class="p-float-label">
+                            <input id="RUT" type="text" formControlName="rut" pInputText>
+                            <label for="RUT">RUT</label>
+                        </span>
+                    </div>
+                    <div class="p-col p-mt-3">
+                        <span class="p-float-label">
+                            <input id="email" type="text" formControlName="email" pInputText>
+                            <label for="email">Email</label>
+                        </span>
+                    </div>
+                    <div class="p-col p-mt-3">
+                        <span class="p-float-label">
+                            <input id="direccion" type="text" formControlName="direccion" pInputText>
+                            <label for="direccion">Direccion</label>
+                        </span>
+                    </div>
+                    <div class="p-col p-mt-3">
+                        <span class="p-float-label">
+                            <input id="celular" type="text" formControlName="celular" pInputText>
+                            <label for="celular">Celular</label>
+                        </span>
+                    </div>
+                    <div class="p-col p-mt-3">
+                        <span class="p-float-label">
+                            <input id="telefono" type="text" formControlName="telefono" pInputText>
+                            <label for="telefono">Telefono</label>
+                        </span>
+                    </div>
+                    <div class="p-col p-mt-3">
+                        <span class="p-float-label">
+                            <input id="bps" type="text" formControlName="bps" pInputText>
+                            <label for="bps">BPS</label>
+                        </span>
+                    </div>
+                    <div class="p-col p-mt-3">
+                        <span class="p-float-label">
+                            <input id="rubro" type="text" formControlName="rubro" pInputText>
+                            <label for="rubro">Rubro</label>
+                        </span>
+                    </div>
+                    <div class="p-col p-mt-3">
+                        <span class="p-float-label">
+                            <input id="observaciones" type="textarea" formControlName="observaciones" pInputText>
+                            <label for="observaciones">Observaciones</label>
+                        </span>
+                    </div>
+                    <div class="p-col p-mt-5">
+                        <p-button type="submit" label="Confirmar" icon="pi pi-check"></p-button>
+                    </div>
+                </div>
+            </form>
+        </p-card>
+    </div>
+</div>
