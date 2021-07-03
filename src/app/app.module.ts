@@ -29,6 +29,7 @@ import { TableModule } from 'primeng/table';
 import { LoginGuard } from './guards/login.guard';
 import { BusinessComponent } from './views/Business/business/business.component';
 import { BusinessTableComponent } from './views/BusinessTable/business-table/business-table.component';
+import { LocationsComponent } from './views/locations/locations.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { BusinessTableComponent } from './views/BusinessTable/business-table/bus
     DepartmentComponent,
     BusinessComponent,
     BusinessTableComponent,
+    LocationsComponent
   ],
   imports: [
     BrowserModule,
