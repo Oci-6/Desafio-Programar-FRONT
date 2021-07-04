@@ -18,9 +18,8 @@ import { BusinessComponent } from './views/Business/business.component';
 import { BusinessTableComponent } from './views/BusinessTable/business-table.component';
 import { LocationsComponent } from './views/locations/locations.component';
 import { ConfirmationService } from 'primeng/api';
-import { PrimeNGModule } from './primeNg.module';
+import { PrimeNGModule } from './modules/primeNg.module';
 import { PersonsGridComponent } from './views/PersonsGrid/persons-grid.component';
-
 
 @NgModule({
   declarations: [

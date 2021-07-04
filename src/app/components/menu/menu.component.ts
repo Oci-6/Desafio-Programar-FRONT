@@ -49,6 +49,11 @@ export class MenuComponent implements OnInit {
             { separator: true },
             ]
           },
+          {
+            label: 'Personas',
+            icon: 'pi pi-pw pi-users',
+            routerLink: '/persons'
+          },
         );
       }
 }
