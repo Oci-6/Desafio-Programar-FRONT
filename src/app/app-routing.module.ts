@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginGuard } from './guards/login.guard';
-import { BusinessComponent } from './views/Business/business/business.component';
-import { BusinessTableComponent } from './views/BusinessTable/business-table/business-table.component';
-import { DepartmentComponent } from './views/Department/department/department.component';
-import { DepartmentsComponent } from './views/Departments/departments/departments.component';
+import { BusinessComponent } from './views/Business/business.component';
+import { BusinessTableComponent } from './views/BusinessTable/business-table.component';
+import { DepartmentComponent } from './views/Department/department.component';
+import { DepartmentsComponent } from './views/Departments/departments.component';
 import { LocationsComponent } from './views/locations/locations.component';
-import { LoginComponent } from './views/login/login/login.component';
+import { LoginComponent } from './views/login/login.component';
+import { PersonsGridComponent } from './views/PersonsGrid/persons-grid.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -33,6 +34,11 @@ const routes: Routes = [
   {
     path: 'locations/:departmentId',
     component: LocationsComponent,
+    canActivate: [LoginGuard],
+  },
+  {
+    path: 'persons',
+    component: PersonsGridComponent,
     canActivate: [LoginGuard],
   },
 ];

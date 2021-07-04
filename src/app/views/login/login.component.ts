@@ -34,13 +34,13 @@ export class LoginComponent implements OnInit {
                         window.location.href = '/';
                     },
                     error => {
-                        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error en el servidor' });
+                        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error en el servidor' });
                     }
                 );
 
             },
             error => {
-                this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Incorrect username or password' });
+                this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error en el servidor' });
             }
         );
 

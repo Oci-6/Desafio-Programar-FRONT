@@ -80,7 +80,7 @@ export class LocationsComponent implements OnInit {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Localidad creada exitosamente' });
       },
       error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al crear la localidad' });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error al crear la localidad' });
       }
     );
 
@@ -105,7 +105,7 @@ export class LocationsComponent implements OnInit {
             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Localidad eliminada exitosamente' });
             if (this.departmentId) this.getLocationsDepartment(this.departmentId);
           },
-          error => this.messageService.add({ severity: 'error', summary: 'Error', detail: error })
+          error => this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error en el servidor' })
         );
       },
       reject: () => this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Eliminación de la localidad cancelada' })
@@ -126,7 +126,7 @@ export class LocationsComponent implements OnInit {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Localidad modificada exitosamente' });
       },
       error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al modificar la localidad' });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error al modificar la localidad' });
       }
     );
   }

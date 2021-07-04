@@ -33,7 +33,7 @@ export class DepartmentsComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Info',
-          detail: 'Error interno del sistema',
+          detail: error.message ? error.message : 'Error interno del sistema',
         });
       }
     )
