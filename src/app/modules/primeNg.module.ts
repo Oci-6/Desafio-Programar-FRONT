@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
     exports: [
@@ -36,6 +37,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         DialogModule,
         DropdownModule,
         ConfirmDialogModule,
+        CalendarModule,
     ],
     imports: [
       PasswordModule,
@@ -55,6 +57,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
       DialogModule,
       DropdownModule,
       ConfirmDialogModule,
+      CalendarModule,
     ]
   })
   export class PrimeNGModule { }

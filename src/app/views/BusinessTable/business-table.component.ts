@@ -119,5 +119,16 @@ export class BusinessTableComponent implements OnInit {
 
   }
 
+  goDown(id:number){
+    this.businessService.goDown(id).subscribe(
+      response => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Empresa dada de baja exitosamente' });
+        this.businessService.getBusinesses();
+      },
+      error => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error al dar de baja la empresa' });
+      }
+    );
+  }
 
 }

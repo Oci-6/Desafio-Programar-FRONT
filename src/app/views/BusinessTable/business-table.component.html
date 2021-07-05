@@ -6,6 +6,7 @@
         <th *ngFor="let col of columns">
           {{col.header}}
         </th>
+        <th>Estado</th>
         <th>Acciones</th>
       </tr>
     </ng-template>
@@ -16,6 +17,17 @@
           {{business[col.field]}}
         </td>
         <td>
+          <button *ngIf="business.state; else cross" pButton pRipple type="button"
+            icon="pi pi-check" class="p-button-rounded p-button-success p-button-outlined p-mr-2" title="Activo">
+          </button>
+          <ng-template #cross>
+            <button pButton pRipple type="button" icon="pi pi-times"
+              class="p-button-rounded p-button-danger p-button-outlined p-mr-2" title="Inactivo">
+            </button>
+
+          </ng-template>
+        </td>
+        <td>
           <button pButton pRipple type="button" icon="pi pi-users" title="Personas de la Empresa"
             [routerLink]="['/persons/business/', business.id]" class="p-button-rounded p-button-primary p-mr-2">
           </button>
@@ -24,6 +36,9 @@
           </button>
           <button pButton pRipple type="button" icon="pi pi-trash" title="Eliminar"
             class="p-button-rounded p-button-danger p-mr-2" (click)="ngOnDelete(business.id)">
+          </button>
+          <button pButton pRipple type="button" icon="pi pi-arrow-down" title="Dar de baja"
+            class="p-button-rounded p-button-info p-mr-2" (click)="goDown(business.id)" *ngIf="business.state">
           </button>
         </td>
       </tr>
@@ -41,13 +56,15 @@
       </div>
       <div class="p-col p-mt-3">
         <span class="p-float-label">
-          <input id="razonSocial" type="text" formControlName="razonSocial" [(ngModel)]="selectedBusiness.businessName" pInputText>
+          <input id="razonSocial" type="text" formControlName="razonSocial" [(ngModel)]="selectedBusiness.businessName"
+            pInputText>
           <label for="razonSocial">Razon Social</label>
         </span>
       </div>
       <div class="p-col p-mt-3">
         <span class="p-float-label">
-          <input id="nombreFantasia" type="text" formControlName="nombreFantasia" [(ngModel)]="selectedBusiness.nameFantasy" pInputText>
+          <input id="nombreFantasia" type="text" formControlName="nombreFantasia"
+            [(ngModel)]="selectedBusiness.nameFantasy" pInputText>
           <label for="nombreFantasia">Nombre Fantasia</label>
         </span>
       </div>
@@ -65,7 +82,8 @@
       </div>
       <div class="p-col p-mt-3">
         <span class="p-float-label">
-          <input id="direccion" type="text" formControlName="direccion" [(ngModel)]="selectedBusiness.address" pInputText>
+          <input id="direccion" type="text" formControlName="direccion" [(ngModel)]="selectedBusiness.address"
+            pInputText>
           <label for="direccion">Direccion</label>
         </span>
       </div>
@@ -95,7 +113,8 @@
       </div>
       <div class="p-col p-mt-3">
         <span class="p-float-label">
-          <input id="observaciones" type="textarea" formControlName="observaciones" [(ngModel)]="selectedBusiness.observations" pInputText>
+          <input id="observaciones" type="textarea" formControlName="observaciones"
+            [(ngModel)]="selectedBusiness.observations" pInputText>
           <label for="observaciones">Observaciones</label>
         </span>
       </div>

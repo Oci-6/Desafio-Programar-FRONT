@@ -48,5 +48,9 @@ export class BusinessService {
     return this.http.delete(this.URL + '/deleteBP/' + id);
   }
 
+  goDown(id:number){
+    return this.http.get(this.URL + '/goDown/' + id);
+  }
+
 }
 
