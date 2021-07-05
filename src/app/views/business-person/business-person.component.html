@@ -1,56 +1,63 @@
-<!-- <p-card header="Personas de la Empresa" styleClass="p-card-shadow p-p-3 p-mt-3">
-    <p-table [columns]="cols" [value]="persons" [scrollLeft]="true"
-        styleClass="p-datatable-gridlines p-datatable-striped" [responsive]="true">
+<p-card header="Personas de la Empresa" styleClass="p-card-shadow p-p-3 p-mt-3">
+    <p-table [columns]="cols" [value]="BP" [scrollLeft]="true" styleClass="p-datatable-gridlines p-datatable-striped"
+        [responsive]="true">
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th *ngFor="let col of columns">
-                    {{col.header}}
-                </th>
+                <th> Nombre</th>
+                <th> Apellido</th>
+                <th> Email</th>
+                <th> Telefono</th>
+                <th> Cargo</th>
                 <th>Acciones</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-person let-columns="columns">
+        <ng-template pTemplate="body" let-business_person let-columns="columns">
             <tr>
-                <td *ngFor="let col of columns">
-                    <span class="p-column-title">{{col.header}}</span>
-                    {{person[col.field]}}
+                <td>
+                    {{business_person.person.name}}
+                </td>
+                <td>
+                    {{business_person.person.lastname}}
+                </td>
+                <td>
+                    {{business_person.person.email}}
+                </td>
+                <td>
+                    {{business_person.person.phone}}
+                </td>
+                <td>
+                    {{business_person.tipo}}
                 </td>
                 <td>
                     <button pButton pRipple type="button" icon="pi pi-pencil" title="Editar"
-                        class="p-button-rounded p-button-warning p-mr-2"
-                        (click)="showUpdatePersonDialog(person)">
+                        class="p-button-rounded p-button-warning p-mr-2" (click)="showEditarBPDialog(business_person)">
                     </button>
                     <button pButton pRipple type="button" icon="pi pi-trash" title="Eliminar"
-                        class="p-button-rounded p-button-danger p-mr-2" (click)="deletePerson(person.id)">
+                        class="p-button-rounded p-button-danger p-mr-2" (click)="ngOnDelete(business_person.id)">
                     </button>
                 </td>
             </tr>
         </ng-template>
     </p-table>
     <button pButton pRipple type="button" label="Agregar Persona" class="p-button-rounded p-button-primary p-mt-3"
-        (click)="showAddPersonDialog()"></button>
+        (click)="showAgregarBPDialog()"></button>
 </p-card>
 
-<p-dialog header="Agregar Persona" [(visible)]="displayAddPersonDialog">
-    <form [formGroup]="addPersonForm" (ngSubmit)="addPerson()">
+<p-dialog header="Agregar Persona a la empresa" [(visible)]="displayAgregarBPDialog">
+    <form [formGroup]="addBPForm" (ngSubmit)="ngOnSubmit()">
         <div class="p-fluid">
-            <p-message *ngIf="!addPersonForm.valid" severity="error" text="Faltan Campos"></p-message>
-
+            <p-message *ngIf="!addBPForm.valid" severity="error" text="Faltan Campos"></p-message>
             <div class="p-field p-mt-3">
-                <label for="nombre">Nombre</label>
-                <input id="nombre" type="text" formControlName="name" pInputText>
+                <p-dropdown formControlName="persons" id="persons" [options]="persons" optionValue="id"
+                    optionLabel="name" placeholder="Personas">
+                </p-dropdown>
             </div>
-            <div class="p-field">
-                <label for="apellido">Apellido</label>
-                <input id="apellido" type="text" formControlName="lastname" pInputText>
-            </div>
-            <div class="p-field">
-                <label for="email">Email</label>
-                <input id="email" type="text" formControlName="email" pInputText>
-            </div>
-            <div class="p-field">
-                <label for="telefono">Telefono</label>
-                <input id="telefono" type="text" formControlName="phone" pInputText>
+            <div class="p-field p-mt-3">
+                <span class="p-float-label">
+                    <input id="type" type="text" formControlName="type" pInputText>
+                    <label for="type">Tipo</label>
+                </span>
+
             </div>
             <div class="p-field">
                 <p-button type="submit" label="Confirmar" icon="pi pi-check"></p-button>
@@ -59,30 +66,21 @@
     </form>
 </p-dialog>
 
-<p-dialog header="Editar Persona" [(visible)]="displayUpdatePersonDialog">
-    <form [formGroup]="updatePersonForm" (ngSubmit)="updatePerson()">
+<p-dialog header="Editar persona de la empresa" [(visible)]="displayEditarBPDialog">
+    <form [formGroup]="editarBPForm" (ngSubmit)="ngOnEdit()">
         <div class="p-fluid">
-            <p-message *ngIf="!addPersonForm.valid" severity="error" text="Faltan Campos"></p-message>
+            <p-message *ngIf="!editarBPForm.valid" severity="error" text="Faltan Campos"></p-message>
 
             <div class="p-field p-mt-3">
-                <label for="nombre">Nombre</label>
-                <input id="nombre" type="text" formControlName="name" [ngModel]="selectedPerson.name" pInputText>
+                <label for="type">Tipo</label>
+                <input id="type" type="text" formControlName="type" [(ngModel)]="selectedBP.tipo" pInputText>
             </div>
-            <div class="p-field">
-                <label for="apellido">Apellido</label>
-                <input id="apellido" type="text" formControlName="lastname" [ngModel]="selectedPerson.lastname" pInputText>
-            </div>
-            <div class="p-field">
-                <label for="email">Email</label>
-                <input id="email" type="text" formControlName="email" [ngModel]="selectedPerson.email" pInputText>
-            </div>
-            <div class="p-field">
-                <label for="telefono">Telefono</label>
-                <input id="telefono" type="text" formControlName="phone" [ngModel]="selectedPerson.phone" pInputText>
-            </div>
+
             <div class="p-field">
                 <p-button type="submit" label="Confirmar" icon="pi pi-check"></p-button>
             </div>
         </div>
     </form>
-</p-dialog> -->
+</p-dialog>
+
+<p-confirmDialog header="Confirmacion" icon="pi pi-exclamation-triangle"></p-confirmDialog>
