@@ -30,4 +30,17 @@ export class BusinessService {
   deleteBusiness(rut: string) {
     return this.http.delete(this.URL + '/' + rut);
   }
+
+  // addPerson(){
+  //   return this.http.post(this.URL + '/addPerson' + );
+  // }
+
+  // putBP(){
+  //   return this.http.put(this.URL + '/putBP' + );
+  // }
+
+  // deleteBP(id: number){
+  //   return this.http.delete(this.URL + '/deleteBP' + id);
+  // }
 }
+

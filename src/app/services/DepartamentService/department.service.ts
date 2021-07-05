@@ -23,10 +23,10 @@ export class DepartmentService {
     return this.http.get<Department>(this.URL + '/' + departmentId);
   }
 
-  putDepartment(Department: Department, departmentId: number) {
-    return this.http.put(this.URL+"/"+ departmentId, Department);
+  putDepartment(department: Department) {
+    return this.http.put(this.URL+"/"+ department.id, department);
   }
-
+ 
   deleteDepartment(departmentId: number) {
     return this.http.delete(this.URL + '/' + departmentId);
   }

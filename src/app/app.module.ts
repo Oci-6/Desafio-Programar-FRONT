@@ -20,6 +20,7 @@ import { LocationsComponent } from './views/locations/locations.component';
 import { ConfirmationService } from 'primeng/api';
 import { PrimeNGModule } from './modules/primeNg.module';
 import { PersonsGridComponent } from './views/PersonsGrid/persons-grid.component';
+import { BusinessPersonComponent } from './views/business-person/business-person.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { PersonsGridComponent } from './views/PersonsGrid/persons-grid.component
     BusinessTableComponent,
     LocationsComponent,
     PersonsGridComponent,
+    BusinessPersonComponent,
   ],
   imports: [
     BrowserModule,
