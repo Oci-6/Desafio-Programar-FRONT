@@ -1,26 +1,109 @@
 <p-card header="Empresas" styleClass="p-card-shadow p-p-3 p-mt-3">
-    <p-table [columns]="cols" [value]="businesses" [scrollLeft]="true" styleClass="p-datatable-gridlines p-datatable-striped"
-      [responsive]="true">
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns">
-            {{col.header}}
-          </th>
-          <th>Acciones</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-business let-columns="columns">
-        <tr>
-          <td *ngFor="let col of columns">
-            <span class="p-column-title">{{col.header}}</span>
-            {{business[col.field]}}
-          </td>
-          <td>
-            <button pButton pRipple type="button" icon="pi pi-map-marker" title="Personas de la Empresa"
+  <p-table [columns]="cols" [value]="businesses" [scrollLeft]="true"
+    styleClass="p-datatable-gridlines p-datatable-striped" [responsive]="true">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{col.header}}
+        </th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-business let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          <span class="p-column-title">{{col.header}}</span>
+          {{business[col.field]}}
+        </td>
+        <td>
+          <button pButton pRipple type="button" icon="pi pi-users" title="Personas de la Empresa"
             [routerLink]="['/business_person/', business.id]" class="p-button-rounded p-button-primary p-mr-2">
           </button>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </p-card>
+          <button pButton pRipple type="button" icon="pi pi-pencil" title="Editar"
+            class="p-button-rounded p-button-warning p-mr-2" (click)="showEditarBusinessDialog(business)">
+          </button>
+          <button pButton pRipple type="button" icon="pi pi-trash" title="Eliminar"
+            class="p-button-rounded p-button-danger p-mr-2" (click)="ngOnDelete(business.id)">
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>
+
+<p-dialog header="Editar Empresa" [(visible)]="displayEditarBusinessDialog" [breakpoints]="[{'960px': '75vw'}]"
+  [style]="{width: '50vw'}" [baseZIndex]="10000">
+  <form [formGroup]="editarBusinessForm" (ngSubmit)="ngOnEdit()">
+    <div class="p-grid p-formgrid p-flex-column p-fluid">
+      <div class="p-col">
+        <p-message *ngIf="!editarBusinessForm.valid" severity="error" text="Faltan Campos"></p-message>
+        <p-message *ngIf="message" severity="{{message.type}}" text="{{message.msg}}"></p-message>
+      </div>
+      <div class="p-col p-mt-3">
+        <span class="p-float-label">
+          <input id="razonSocial" type="text" formControlName="razonSocial" [(ngModel)]="selectedBusiness.businessName" pInputText>
+          <label for="razonSocial">Razon Social</label>
+        </span>
+      </div>
+      <div class="p-col p-mt-3">
+        <span class="p-float-label">
+          <input id="nombreFantasia" type="text" formControlName="nombreFantasia" [(ngModel)]="selectedBusiness.nameFantasy" pInputText>
+          <label for="nombreFantasia">Nombre Fantasia</label>
+        </span>
+      </div>
+      <div class="p-col p-mt-3">
+        <span class="p-float-label">
+          <input id="RUT" type="text" formControlName="rut" [(ngModel)]="selectedBusiness.rut" pInputText>
+          <label for="RUT">RUT</label>
+        </span>
+      </div>
+      <div class="p-col p-mt-3">
+        <span class="p-float-label">
+          <input id="email" type="text" formControlName="email" [(ngModel)]="selectedBusiness.email" pInputText>
+          <label for="email">Email</label>
+        </span>
+      </div>
+      <div class="p-col p-mt-3">
+        <span class="p-float-label">
+          <input id="direccion" type="text" formControlName="direccion" [(ngModel)]="selectedBusiness.address" pInputText>
+          <label for="direccion">Direccion</label>
+        </span>
+      </div>
+      <div class="p-col p-mt-3">
+        <span class="p-float-label">
+          <input id="celular" type="text" formControlName="celular" [(ngModel)]="selectedBusiness.cellphone" pInputText>
+          <label for="celular">Celular</label>
+        </span>
+      </div>
+      <div class="p-col p-mt-3">
+        <span class="p-float-label">
+          <input id="telefono" type="text" formControlName="telefono" [(ngModel)]="selectedBusiness.phone" pInputText>
+          <label for="telefono">Telefono</label>
+        </span>
+      </div>
+      <div class="p-col p-mt-3">
+        <span class="p-float-label">
+          <input id="bps" type="text" formControlName="bps" [(ngModel)]="selectedBusiness.BPS" pInputText>
+          <label for="bps">BPS</label>
+        </span>
+      </div>
+      <div class="p-col p-mt-3">
+        <span class="p-float-label">
+          <input id="rubro" type="text" formControlName="rubro" [(ngModel)]="selectedBusiness.occupation" pInputText>
+          <label for="rubro">Rubro</label>
+        </span>
+      </div>
+      <div class="p-col p-mt-3">
+        <span class="p-float-label">
+          <input id="observaciones" type="textarea" formControlName="observaciones" [(ngModel)]="selectedBusiness.observations" pInputText>
+          <label for="observaciones">Observaciones</label>
+        </span>
+      </div>
+      <div class="p-col p-mt-5">
+        <p-button type="submit" label="Confirmar" icon="pi pi-check"></p-button>
+      </div>
+    </div>
+  </form>
+</p-dialog>
+
+<p-confirmDialog header="Confirmacion" icon="pi pi-exclamation-triangle"></p-confirmDialog>

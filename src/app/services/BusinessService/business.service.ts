@@ -19,16 +19,16 @@ export class BusinessService {
     return this.http.post(this.URL, Business);
   }
 
-  getBusiness(rut: string) {
-    return this.http.get(this.URL + '/' + rut);
+  getBusiness(id: number) {
+    return this.http.get(this.URL + '/' + id);
   }
 
-  putBusiness(Business: Business, rut: string) {
-    return this.http.put(this.URL + "/" + rut, Business);
+  putBusiness(business: Business) {
+    return this.http.put(this.URL + "/" + business.id, business);
   }
 
-  deleteBusiness(rut: string) {
-    return this.http.delete(this.URL + '/' + rut);
+  deleteBusiness(id: number) {
+    return this.http.delete(this.URL + '/' + id);
   }
 
   // addPerson(){
