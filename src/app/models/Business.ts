@@ -14,6 +14,8 @@ export class Business {
     state: boolean | undefined;
     leaveDate: Date | undefined;
     observations: string | undefined;
-    logo: string | undefined
+    logo: string | undefined;
+    departmentId: number | undefined;
+    locationId: number | undefined;
     constructor() {}
 }
