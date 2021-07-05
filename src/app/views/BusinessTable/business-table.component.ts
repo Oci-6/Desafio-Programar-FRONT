@@ -3,16 +3,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Business } from 'src/app/models/Business';
 import { Message } from 'src/app/models/Message';
+import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { BusinessService } from 'src/app/services/BusinessService/business.service';
 
 @Component({
   selector: 'app-business-table',
   templateUrl: './business-table.component.html',
-  styleUrls: ['./business-table.component.css']
+  styleUrls: ['./business-table.component.css'],
 })
 export class BusinessTableComponent implements OnInit {
-
-
   message: Message | undefined;
 
   public editarBusinessForm: FormGroup = new FormGroup({});
@@ -21,16 +20,18 @@ export class BusinessTableComponent implements OnInit {
   businessId: number | undefined;
   selectedBusiness: any = {};
 
-
   constructor(
+    private auth: AuthService,
     private businessService: BusinessService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
-  ) { }
+  ) {}
 
   cols: any[] = [];
 
   businesses: Business[] = [];
+
+  isAdmin: boolean = false;
 
   ngOnInit(): void {
     this.cols = [
@@ -40,32 +41,66 @@ export class BusinessTableComponent implements OnInit {
       { field: 'email', header: 'Email' },
     ];
 
-    this.businessService.getBusinesses().subscribe(
-      (response) => {
-        this.businesses = response;
-      },
-      (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Info',
-          detail: error.message ? error.message : 'Error interno del sistema',
-        });
-      }
-    )
-
     this.editarBusinessForm = new FormGroup({
       nombreFantasia: new FormControl('', [Validators.required]),
       rut: new FormControl('', [Validators.required]),
       razonSocial: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required]),
-      direccion: new FormControl('',),
-      celular: new FormControl('',),
-      telefono: new FormControl('',),
-      bps: new FormControl('',),
-      rubro: new FormControl('',),
-      observaciones: new FormControl('',),
+      direccion: new FormControl(''),
+      celular: new FormControl(''),
+      telefono: new FormControl(''),
+      bps: new FormControl(''),
+      rubro: new FormControl(''),
+      observaciones: new FormControl(''),
     });
 
+    let user: any = this.auth.getUserLogged();
+
+    if (user) {
+      if (
+        user.roles.find((elem: { name: string }) => {
+          return elem.name == 'Admin';
+        })
+      ) {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
+    } else {
+      this.isAdmin = false;
+    }
+
+    this.getBusinesses();
+  }
+
+  getBusinesses() {
+    if (!this.isAdmin) {
+      this.auth.getUserBussiness().subscribe(
+        (response) => {
+          this.businesses = response;
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Info',
+            detail: error.message ? error.message : 'Error interno del sistema',
+          });
+        }
+      );
+    } else {
+      this.businessService.getBusinesses().subscribe(
+        (response) => {
+          this.businesses = response;
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Info',
+            detail: error.message ? error.message : 'Error interno del sistema',
+          });
+        }
+      );
+    }
   }
 
   ngOnDelete(id: number): void {
@@ -73,14 +108,28 @@ export class BusinessTableComponent implements OnInit {
       message: 'Seguro que quieres eliminar la empresa?',
       accept: () => {
         this.businessService.deleteBusiness(id).subscribe(
-          result => {
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Empresa eliminada exitosamente' });
+          (result) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Empresa eliminada exitosamente',
+            });
             this.businessService.getBusinesses();
           },
-          error => this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error en el servidor' })
+          (error) =>
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: error.message ? error.message : 'Error en el servidor',
+            })
         );
       },
-      reject: () => this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Eliminación de la empresa cancelada' })
+      reject: () =>
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Info',
+          detail: 'Eliminación de la empresa cancelada',
+        }),
     });
   }
 
@@ -88,7 +137,8 @@ export class BusinessTableComponent implements OnInit {
     let business = new Business();
     business.id = this.selectedBusiness.id;
     business.businessName = this.editarBusinessForm.controls.razonSocial.value;
-    business.nameFantasy = this.editarBusinessForm.controls.nombreFantasia.value;
+    business.nameFantasy =
+      this.editarBusinessForm.controls.nombreFantasia.value;
     business.rut = this.editarBusinessForm.controls.rut.value;
     business.email = this.editarBusinessForm.controls.email.value;
     business.address = this.editarBusinessForm.controls.direccion.value;
@@ -96,39 +146,79 @@ export class BusinessTableComponent implements OnInit {
     business.phone = this.editarBusinessForm.controls.telefono.value;
     business.BPS = this.editarBusinessForm.controls.bps.value;
     business.occupation = this.editarBusinessForm.controls.rubro.value;
-    business.observations = this.editarBusinessForm.controls.observaciones.value;
+    business.observations =
+      this.editarBusinessForm.controls.observaciones.value;
 
-    this.businessService.putBusiness(business).subscribe(
-      response => {
-        this.businessService.getBusinesses();
-        this.displayEditarBusinessDialog = false;
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Empresa modificada exitosamente' });
-      },
-      error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error al modificar la empresa' });
-      }
-    );
+    if (!this.isAdmin) {
+      this.auth.putBusiness(business).subscribe(
+        (response) => {
+          this.getBusinesses();
+          this.displayEditarBusinessDialog = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Empresa modificada exitosamente',
+          });
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: error.message
+              ? error.message
+              : 'Error al modificar la empresa',
+          });
+        }
+      );
+    } else {
+      this.businessService.putBusiness(business).subscribe(
+        (response) => {
+          this.getBusinesses();
+          this.displayEditarBusinessDialog = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Empresa modificada exitosamente',
+          });
+        },
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: error.message
+              ? error.message
+              : 'Error al modificar la empresa',
+          });
+        }
+      );
+    }
   }
 
-  
   showEditarBusinessDialog(business: Location): void {
-
     this.selectedBusiness = business;
 
     this.displayEditarBusinessDialog = true;
-
   }
 
-  goDown(id:number){
+  goDown(id: number) {
     this.businessService.goDown(id).subscribe(
-      response => {
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Empresa dada de baja exitosamente' });
+      (response) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Empresa dada de baja exitosamente',
+        });
         this.businessService.getBusinesses();
       },
-      error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error al dar de baja la empresa' });
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.message
+            ? error.message
+            : 'Error al dar de baja la empresa',
+        });
       }
     );
   }
-
 }

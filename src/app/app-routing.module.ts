@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { IsAdminGuard } from './guards/is-admin.guard';
 import { LoginGuard } from './guards/login.guard';
 import { BusinessPersonComponent } from './views/business-person/business-person.component';
 import { BusinessComponent } from './views/Business/business.component';
@@ -15,17 +16,17 @@ const routes: Routes = [
   {
     path: 'department',
     component: DepartmentComponent,
-    canActivate: [LoginGuard],
+    canActivate: [LoginGuard, IsAdminGuard],
   },
   {
     path: 'departments',
     component: DepartmentsComponent,
-    canActivate: [LoginGuard],
+    canActivate: [LoginGuard, IsAdminGuard],
   },
   {
     path: 'business',
     component: BusinessComponent,
-    canActivate: [LoginGuard],
+    canActivate: [LoginGuard, IsAdminGuard],
   },
   {
     path: 'persons/business/:id',
@@ -35,16 +36,21 @@ const routes: Routes = [
   {
     path: 'businesses',
     component: BusinessTableComponent,
-    canActivate: [LoginGuard],
+    canActivate: [LoginGuard, IsAdminGuard],
   },
   {
     path: 'locations/:departmentId',
     component: LocationsComponent,
-    canActivate: [LoginGuard],
+    canActivate: [LoginGuard, IsAdminGuard],
   },
   {
     path: 'persons',
     component: PersonsGridComponent,
+    canActivate: [LoginGuard, IsAdminGuard],
+  },
+  {
+    path: 'miEmpresa',
+    component: BusinessTableComponent,
     canActivate: [LoginGuard],
   },
 ];
