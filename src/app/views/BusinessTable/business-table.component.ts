@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Business } from 'src/app/models/Business';
 import { Message } from 'src/app/models/Message';
 import { BusinessService } from 'src/app/services/BusinessService/business.service';
+import { ReportsService } from 'src/app/services/ReportsService/reports.service';
 
 @Component({
   selector: 'app-business-table',
@@ -25,12 +26,16 @@ export class BusinessTableComponent implements OnInit {
   constructor(
     private businessService: BusinessService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private reportsService: ReportsService,
   ) { }
 
   cols: any[] = [];
 
   businesses: Business[] = [];
+
+  businessByActivity: number = -1;
+  businessActives: number = 0;
 
   ngOnInit(): void {
     this.cols = [
@@ -38,11 +43,25 @@ export class BusinessTableComponent implements OnInit {
       { field: 'businessName', header: 'Razon Social' },
       { field: 'nameFantasy', header: 'Nombre Fantasia' },
       { field: 'email', header: 'Email' },
+      { field: 'occupation', header: 'Rubro'},
     ];
 
     this.businessService.getBusinesses().subscribe(
       (response) => {
         this.businesses = response;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Info',
+          detail: error.message ? error.message : 'Error interno del sistema',
+        });
+      }
+    )
+
+    this.reportsService.countActives().subscribe(
+      (response) => {
+        this.businessActives = response.COUNT;
       },
       (error) => {
         this.messageService.add({
@@ -110,7 +129,7 @@ export class BusinessTableComponent implements OnInit {
     );
   }
 
-  
+
   showEditarBusinessDialog(business: Location): void {
 
     this.selectedBusiness = business;
@@ -119,7 +138,7 @@ export class BusinessTableComponent implements OnInit {
 
   }
 
-  goDown(id:number){
+  goDown(id: number) {
     this.businessService.goDown(id).subscribe(
       response => {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Empresa dada de baja exitosamente' });
@@ -129,6 +148,31 @@ export class BusinessTableComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error al dar de baja la empresa' });
       }
     );
+  }
+
+  filter(e: any) {
+
+    if (!(e.target.value === "")) {
+      this.reportsService.listByActivity(e.target.value).subscribe(
+        response => {
+          this.businesses = response; 
+          this.businessByActivity = this.businesses.length;
+        },
+        error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error al dar de baja la empresa' });
+        }
+      );
+    } else {
+      this.businessService.getBusinesses().subscribe(
+        response =>{
+          this.businesses = response;
+          this.businessByActivity = -1;
+        },
+        error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error al dar de baja la empresa' });
+        }  
+      )
+    }
   }
 
 }

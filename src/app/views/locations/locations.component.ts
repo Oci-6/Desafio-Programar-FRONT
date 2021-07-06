@@ -7,6 +7,7 @@ import { LocationService } from 'src/app/services/LocationService/location.servi
 import { Message } from 'src/app/models/Message';
 import { Department } from 'src/app/models/Department';
 import { DepartmentService } from 'src/app/services/DepartamentService/department.service';
+import { ReportsService } from 'src/app/services/ReportsService/reports.service';
 
 @Component({
   selector: 'app-locations',
@@ -29,6 +30,7 @@ export class LocationsComponent implements OnInit {
 
   selectedLocation: any = {};
   cols: any[] = [];
+  
 
   constructor(
     private locationService: LocationService,
@@ -36,6 +38,7 @@ export class LocationsComponent implements OnInit {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private route: ActivatedRoute,
+    private reportsService: ReportsService,
   ) { }
 
   ngOnInit(): void {
@@ -62,6 +65,7 @@ export class LocationsComponent implements OnInit {
 
     this.cols = [
       { field: 'name', header: 'Nombre' },
+      { field: 'count', header:'Empresas'}
     ];
   }
 
@@ -87,13 +91,16 @@ export class LocationsComponent implements OnInit {
     this.displayAgregarLocationDialog = false;
   }
 
-  getLocationsDepartment(departmentId: number) {
+  async getLocationsDepartment(departmentId: number) {
     // Get localidades de un departamento
-    this.departmentService.getDepartment(departmentId).subscribe(
-      result => {
-        if(result.locations)this.locationsDepartment = result.locations;
-      }
+    let result = await this.departmentService.getDepartment(departmentId).toPromise(
     );
+    if(result.locations)this.locationsDepartment = result.locations;
+    for (let index = 0; index < this.locationsDepartment.length; index++) {
+      const element = this.locationsDepartment[index];
+      if(element.id) element.count = await this.businessByLocation(element.id)
+      
+    }
   }
 
   ngOnDelete(id: number): void {
@@ -141,6 +148,12 @@ export class LocationsComponent implements OnInit {
 
     this.displayEditarLocationDialog = true;
 
+  }
+
+  async businessByLocation(locationId:number):Promise<number>{
+    
+    let result =  await this.reportsService.countByLocation(locationId).toPromise()
+    return result.COUNT;
   }
   
 }
