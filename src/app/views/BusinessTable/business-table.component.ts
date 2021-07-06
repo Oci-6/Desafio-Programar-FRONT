@@ -5,6 +5,7 @@ import { Business } from 'src/app/models/Business';
 import { Message } from 'src/app/models/Message';
 import { AuthService } from 'src/app/services/AuthService/auth.service';
 import { BusinessService } from 'src/app/services/BusinessService/business.service';
+import { ReportsService } from 'src/app/services/ReportsService/reports.service';
 
 @Component({
   selector: 'app-business-table',
@@ -24,14 +25,17 @@ export class BusinessTableComponent implements OnInit {
     private auth: AuthService,
     private businessService: BusinessService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
-  ) {}
+    private confirmationService: ConfirmationService,
+    private reportsService: ReportsService,
+  ) { }
 
   cols: any[] = [];
 
   businesses: Business[] = [];
 
   isAdmin: boolean = false;
+  businessByActivity: number = -1;
+  businessActives: number = 0;
 
   ngOnInit(): void {
     this.cols = [
@@ -39,7 +43,34 @@ export class BusinessTableComponent implements OnInit {
       { field: 'businessName', header: 'Razon Social' },
       { field: 'nameFantasy', header: 'Nombre Fantasia' },
       { field: 'email', header: 'Email' },
+      { field: 'occupation', header: 'Rubro'},
     ];
+
+    this.businessService.getBusinesses().subscribe(
+      (response) => {
+        this.businesses = response;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Info',
+          detail: error.message ? error.message : 'Error interno del sistema',
+        });
+      }
+    )
+
+    this.reportsService.countActives().subscribe(
+      (response) => {
+        this.businessActives = response.COUNT;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Info',
+          detail: error.message ? error.message : 'Error interno del sistema',
+        });
+      }
+    )
 
     this.editarBusinessForm = new FormGroup({
       nombreFantasia: new FormControl('', [Validators.required]),
@@ -221,4 +252,30 @@ export class BusinessTableComponent implements OnInit {
       }
     );
   }
+
+  filter(e: any) {
+
+    if (!(e.target.value === "")) {
+      this.reportsService.listByActivity(e.target.value).subscribe(
+        response => {
+          this.businesses = response; 
+          this.businessByActivity = this.businesses.length;
+        },
+        error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error al dar de baja la empresa' });
+        }
+      );
+    } else {
+      this.businessService.getBusinesses().subscribe(
+        response =>{
+          this.businesses = response;
+          this.businessByActivity = -1;
+        },
+        error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: error.message ? error.message : 'Error al dar de baja la empresa' });
+        }  
+      )
+    }
+  }
+
 }

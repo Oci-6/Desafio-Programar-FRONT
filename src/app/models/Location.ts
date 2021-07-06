@@ -5,6 +5,7 @@ export class Location {
     name?: string | undefined;
     department?: Department | undefined;
     departmentId?: number | undefined;
+    count?: number;
 
     constructor() { }
 }
